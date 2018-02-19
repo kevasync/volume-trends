@@ -1,0 +1,23 @@
+store using key that has date in it
+
+cleanup for stale records
+
+1, 5, 15, 30, 60, 120, 240, 480, 720, 960, 1440 minute trends
+
+
+get intevals down to second: datetime.datetime.now() - datetime.timedelta(minutes=5)
+get polls for intervals (if exact second is not available look +5 seconds in either direction)
+get current poll	
+from current poll, get all symbols
+
+create header line from invervals
+
+foreach inteval
+	for each currentSymbol
+		print symbol
+		for each interval/current
+			print ratio of interval vol v current
+		println
+
+
+
