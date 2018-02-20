@@ -1,17 +1,11 @@
-import requests, datetime, json, couchdb, time
+import requests
+from util import *
 
-base = 'http://localhost:5984'
-resource = 'poll'
-
-couchserver = couchdb.Server(base)
-if resource in couchserver:
-    db = couchserver[resource]
-else:
-    db = couchserver.create(resource)
+db = getCouchDb()
 
 while True: 
 	dt = datetime.datetime.now()
-	id = dt.strftime("%H%M%S")
+	id = getDbIdentifier(dt)
 	data = json.loads(requests.get('https://api.coinmarketcap.com/v1/ticker/').content)
 	try:
 		db[id] = {'data': data}
