@@ -1,16 +1,15 @@
-import requests
 from util import *
+import requests
 
 db = getCouchDb()
 
 while True: 
-	dt = datetime.datetime.now()
-	id = getDbIdentifier(dt)
 	data = json.loads(requests.get('https://api.coinmarketcap.com/v1/ticker/').content)
+	id = getDbIdentifier(datetime.datetime.now())
 	try:
 		db[id] = {'data': data}
 	except couchdb.http.ResourceConflict: 
 		db.delete(db[id])
 		db[id] = {'data': data}
-	print('data written {}'.format(id))
-	time.sleep(.75)
+	print('poll created: {}'.format(id))
+	time.sleep(30)

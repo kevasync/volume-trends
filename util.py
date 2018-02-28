@@ -10,4 +10,4 @@ def getCouchDb():
 	    return couchserver.create(resource)
 
 def getDbIdentifier(dt):
-	return dt.strftime("%H%M%S")
+	return dt.strftime("%y%m%d%H%M")
