@@ -1,11 +1,5 @@
-store using key that has date in it
-
-cleanup for stale records
-
-1, 5, 15, 30, 60, 120, 240, 480, 720, 960, 1440 minute trends
-
-
-create array of objects with symbol, name and volume at each interval
-
+clear screen
 
 handle error on coinmarketcap call
+
+while looping, store report data and use ML to determine likelyhood of price increase

@@ -12,4 +12,4 @@ while True:
 		db.delete(db[id])
 		db[id] = {'data': data}
 	print('poll created: {}'.format(id))
-	time.sleep(30)
+	time.sleep(pollInterval)
