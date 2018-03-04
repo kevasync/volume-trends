@@ -7,6 +7,7 @@ db = getCouchDb()
 
 configPath = getConfigPathFromArgs(sys.argv)
 config = getConfig(configPath)
+symbolsToDisplay = config.get(symbolsConfigKey)
 configIntervals = config.get(intervalsConfigKey)
 pollInterval = config.get(pollIntervalConfigKey)
 intervals = [0] + configIntervals
@@ -81,7 +82,11 @@ while True:
 					line.append(formatCell(val))
 			else:
 				line.append('?')
-		reportData.append(line)		
+		if not symbolsToDisplay:
+			reportData.append(line)
+		elif s in symbolsToDisplay:
+			reportData.append(line)
+			
 
 	reportData = sortFunc(reportData)
 	formattedIntervals = list(map(lambda x: '{}h'.format(x / 60) if x >= 60 else '{}m'.format(x), configIntervals))
