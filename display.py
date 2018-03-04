@@ -4,13 +4,19 @@ import tabulate
 print('% change in 24 hour moving volume (time in minutes)')
 
 db = getCouchDb()
-refreshInterval = pollInterval
 
-intervals = [0, 1, 5, 15, 30, 60, 120, 240, 480, 720, 960, 1440, 2160, 2880]
+configPath = getConfigPathFromArgs(sys.argv)
+config = getConfig(configPath)
+configIntervals = config.get(intervalsConfigKey)
+pollInterval = config.get(pollIntervalConfigKey)
+intervals = [0] + configIntervals
+
+print(intervals)
 
 sortFunc = lambda x: x
 sortColIdx = 0
 sortKey = 'market cap'
+sortDescending = False
 if len(sys.argv) >= 2 :
 	sortKey = int(sys.argv[1])
 	if sortKey in intervals:
@@ -20,6 +26,7 @@ if len(sys.argv) >= 2 :
 			key=lambda k:  getCellFloatVal(k[sortColIdx]),
 			reverse=sortDescending)
 
+refreshInterval = pollInterval
 while True:
 	dt = datetime.datetime.now() - datetime.timedelta(seconds=pollInterval)
 	currentPoll = db[getDbIdentifier(dt)]['data']
@@ -29,13 +36,8 @@ while True:
 
 	for x in currentPoll: marketCaps[x['symbol']] = float(x['market_cap_usd'])
 
-
-	marketCapValues = list(marketCaps.values())
-	marketCapMin = float(min(marketCapValues))
-	marketCapMax = float(max(marketCapValues))
-
-	marketCapMidThreshold = (marketCapMax - marketCapMin) / 100
-	marketCapLargeThreshold = (marketCapMax - marketCapMin) / 3	
+	marketCapMidThreshold = config.get(midCapConfigKey)
+	marketCapLargeThreshold = config.get(largeCapConfigKey)
 
 	volumeBySymbol = dict()
 	for s in currentSymbols:
@@ -82,9 +84,10 @@ while True:
 		reportData.append(line)		
 
 	reportData = sortFunc(reportData)
-	print(tabulate.tabulate(reportData, headers=['symbol & market cap', '1m', 5, 15, 30, '1h', 2, 4, 8, 12, 16, 24, 36, 48], tablefmt='orgtbl'))
+	formattedIntervals = list(map(lambda x: '{}h'.format(x / 60) if x >= 60 else '{}m'.format(x), configIntervals))
+	print(tabulate.tabulate(reportData, headers=['symbol & market cap'] + formattedIntervals, tablefmt='orgtbl'))
 	print('data above created at {}, sorting by {}{}, refreshing in {} seconds'.format(
-		datetime.datetime.now(),
+		datetime.datetime.now().strftime("%b %d %H:%M:%S"),
 		'column {}; {} minutes'.format(sortColIdx + 1, sortKey),
 		' (descending)' if sortDescending else '',
 		refreshInterval))

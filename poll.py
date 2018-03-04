@@ -3,6 +3,11 @@ import requests
 
 db = getCouchDb()
 
+configPath = getConfigPathFromArgs(sys.argv)
+config = getConfig(configPath)
+
+pollInterval = config.get(pollIntervalConfigKey)
+
 while True: 
 	data = json.loads(requests.get('https://api.coinmarketcap.com/v1/ticker/').content)
 	id = getDbIdentifier(datetime.datetime.now())

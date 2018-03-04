@@ -1,7 +1,5 @@
 import datetime, json, couchdb, time, sys, re
 
-pollInterval = 30
-
 def getCouchDb():
 	base = 'http://localhost:5984'
 	resource = 'poll'
@@ -38,3 +36,26 @@ def getCellFloatVal(val):
 		return float(v)
 	else:
 		return -99999999999
+
+pollIntervalConfigKey = "pollInterval"
+symbolsConfigKey = "symbols"
+largeCapConfigKey = "largeMarketCapThreshold"
+midCapConfigKey = "midMarketCapThreshold"
+intervalsConfigKey = "intervalsInMinutes"
+
+def getConfig(path):
+	j = json.load(open(path))
+	config = dict()	
+	config[pollIntervalConfigKey] = j.get("pollInternvalInSeconds")
+	config[symbolsConfigKey] = j.get("symbolsToDisplay")
+	config[largeCapConfigKey] = j.get("largeMarketCapThreshold")
+	config[midCapConfigKey] = j.get("midMarketCapThreshold")
+	config[intervalsConfigKey] = j.get("intervalsInMinutes")
+	return config
+
+def getConfigPathFromArgs(args):
+	configPath = 'config.json'
+	for a in args:
+		if a.startswith('-c'):
+			configPath = a.split('=')[1] 
+	return configPath
