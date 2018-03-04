@@ -1,5 +1,23 @@
 import datetime, json, couchdb, time, sys, re
 
+pollIntervalConfigKey = "pollInterval"
+symbolsConfigKey = "symbols"
+largeCapConfigKey = "largeMarketCapThreshold"
+midCapConfigKey = "midMarketCapThreshold"
+intervalsConfigKey = "intervalsInMinutes"
+cellFormatConfigKey = "volChangePercentThresholds"
+
+def getConfig(path):
+	j = json.load(open(path))
+	config = dict()	
+	config[pollIntervalConfigKey] = j.get("pollInternvalInSeconds")
+	config[symbolsConfigKey] = j.get("symbolsToDisplay")
+	config[largeCapConfigKey] = j.get("largeMarketCapThreshold")
+	config[midCapConfigKey] = j.get("midMarketCapThreshold")
+	config[intervalsConfigKey] = j.get("intervalsInMinutes")
+	config[cellFormatConfigKey] = j.get("volChangeFormatThresholds")
+	return config
+
 def getCouchDb():
 	base = 'http://localhost:5984'
 	resource = 'poll'
@@ -12,17 +30,18 @@ def getCouchDb():
 def getDbIdentifier(dt):
 	return dt.strftime("%y%m%d%H%M")
 
-def formatCell(val):
+def formatCell(val, config):
 	if val == '?':
 		return val
 	else:
-		if val <= -15:
+		thresholds = config.get(cellFormatConfigKey)
+		if val <= thresholds[0]:
 			color = '31'
-		elif val <= -5:
+		elif val <= thresholds[1]:
 			color = '33'
-		elif val >= 15:
+		elif val >= thresholds[3]:
 			color = '32'
-		elif val >= 5:
+		elif val >= thresholds[2]:
 			color = '36'
 		else:
 			color = '34'
@@ -36,22 +55,6 @@ def getCellFloatVal(val):
 		return float(v)
 	else:
 		return -99999999999
-
-pollIntervalConfigKey = "pollInterval"
-symbolsConfigKey = "symbols"
-largeCapConfigKey = "largeMarketCapThreshold"
-midCapConfigKey = "midMarketCapThreshold"
-intervalsConfigKey = "intervalsInMinutes"
-
-def getConfig(path):
-	j = json.load(open(path))
-	config = dict()	
-	config[pollIntervalConfigKey] = j.get("pollInternvalInSeconds")
-	config[symbolsConfigKey] = j.get("symbolsToDisplay")
-	config[largeCapConfigKey] = j.get("largeMarketCapThreshold")
-	config[midCapConfigKey] = j.get("midMarketCapThreshold")
-	config[intervalsConfigKey] = j.get("intervalsInMinutes")
-	return config
 
 def getConfigPathFromArgs(args):
 	configPath = 'config.json'

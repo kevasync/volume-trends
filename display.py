@@ -12,8 +12,6 @@ configIntervals = config.get(intervalsConfigKey)
 pollInterval = config.get(pollIntervalConfigKey)
 intervals = [0] + configIntervals
 
-print(intervals)
-
 sortFunc = lambda x: x
 sortColIdx = 0
 sortKey = 'market cap'
@@ -79,7 +77,7 @@ while True:
 			if i in volumeBySymbol[s]:
 				if i != 0:
 					val = volumeBySymbol[s][i]
-					line.append(formatCell(val))
+					line.append(formatCell(val, config))
 			else:
 				line.append('?')
 		if not symbolsToDisplay:
