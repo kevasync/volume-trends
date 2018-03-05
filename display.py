@@ -3,7 +3,8 @@ import tabulate
 
 print('% change in 24 hour moving volume (time in minutes)')
 
-db = getCouchDb()
+pollTable = getCouchDbTable('poll')
+volumeChangeTable = getCouchDbTable('volume-ratio')
 
 configPath = getConfigPathFromArgs(sys.argv)
 config = getConfig(configPath)
@@ -28,7 +29,7 @@ if len(sys.argv) >= 2 :
 refreshInterval = pollInterval
 while True:
 	dt = datetime.datetime.now() - datetime.timedelta(seconds=pollInterval)
-	currentPoll = db[getDbIdentifier(dt)]['data']
+	currentPoll = pollTable[getDbIdentifier(dt)]['data']
 
 	currentSymbols = list(map(lambda x: x['symbol'], currentPoll))
 	marketCaps = dict()
@@ -48,7 +49,7 @@ while True:
 		else:	
 			try:
 				key = getDbIdentifier(dt - datetime.timedelta(minutes=i))
-				polls = db[key]['data']
+				polls = pollTable[key]['data']
 			except couchdb.http.ResourceNotFound:
 				for s in currentSymbols:
 					volumeBySymbol[s][i] = '?'
@@ -62,7 +63,11 @@ while True:
 					volumeBySymbol[s][i] = float(vol)
 				else:
 					volumeBySymbol[s][i] = (float(vol) / volumeBySymbol[s][0] - 1) * 100
-					
+	
+
+	volRecordId = getDbIdentifier(dt)
+	writeToTable(volumeBySymbol, volumeChangeTable, volRecordId)
+
 	reportData = list()
 	for s in currentSymbols:
 		if marketCaps[s] >= marketCapLargeThreshold:

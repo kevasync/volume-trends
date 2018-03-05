@@ -18,9 +18,8 @@ def getConfig(path):
 	config[cellFormatConfigKey] = j.get("volChangeFormatThresholds")
 	return config
 
-def getCouchDb():
+def getCouchDbTable(resource):
 	base = 'http://localhost:5984'
-	resource = 'poll'
 	couchserver = couchdb.Server(base)
 	if resource in couchserver:
 	    return couchserver[resource]
@@ -62,3 +61,10 @@ def getConfigPathFromArgs(args):
 		if a.startswith('-c'):
 			configPath = a.split('=')[1] 
 	return configPath
+
+def writeToTable(data, table, id):
+	try:
+		table[id] = data
+	except couchdb.http.ResourceConflict: 
+		table.delete(table[id])
+		table[id] = data
