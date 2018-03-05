@@ -8,7 +8,7 @@ replayTable = getCouchDbTable('volume-ratio')
 symbols = sys.argv[1].split(',')
 start = int(sys.argv[2])
 end = int(sys.argv[3])
-skipInterval = int(sys.argv[4])
+skipInterval = int(sys.argv[4]) #in minutes
 
 idx = start
 while idx <= end:
@@ -21,8 +21,8 @@ while idx <= end:
 					k = '{}'.format(i)
 					if k in symbolData:
 						val = symbolData[k]
-						if val != '?': 
-							print('{} - {} - {}: {}'.format(idx, s, i, float(val)))
+						if val != '?':
+							print('{} - {} - {}: {}'.format(dbIdentifierToGentleString(idx), s, i, float(val)))
 							
 	except couchdb.http.ResourceNotFound:
 		print('data not found: {}'.format(idx))

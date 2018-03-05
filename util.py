@@ -6,6 +6,8 @@ largeCapConfigKey = "largeMarketCapThreshold"
 midCapConfigKey = "midMarketCapThreshold"
 intervalsConfigKey = "intervalsInMinutes"
 cellFormatConfigKey = "volChangePercentThresholds"
+dtIdxFormatString = '%y%m%d%H%M'
+gentleDateFormatString = '%b %d %H:%M'
 
 def getConfig(path):
 	j = json.load(open(path))
@@ -27,7 +29,11 @@ def getCouchDbTable(resource):
 	    return couchserver.create(resource)
 
 def getDbIdentifier(dt):
-	return dt.strftime("%y%m%d%H%M")
+	return dt.strftime(dtIdxFormatString)
+
+def dbIdentifierToGentleString(id):
+	dt = datetime.datetime.strptime('{}'.format(id), dtIdxFormatString)
+	return dt.strftime(gentleDateFormatString)
 
 def formatCell(val, config):
 	if val == '?':

@@ -95,7 +95,7 @@ while True:
 	formattedIntervals = list(map(lambda x: '{}h'.format(x / 60) if x >= 60 else '{}m'.format(x), configIntervals))
 	print(tabulate.tabulate(reportData, headers=['symbol & market cap'] + formattedIntervals, tablefmt='orgtbl'))
 	print('data above created at {}, sorting by {}{}, refreshing in {} seconds'.format(
-		datetime.datetime.now().strftime("%b %d %H:%M:%S"),
+		datetime.datetime.now().strftime(gentleDateFormatString),
 		'column {}; {} minutes'.format(sortColIdx + 1, sortKey),
 		' (descending)' if sortDescending else '',
 		refreshInterval))
