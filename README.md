@@ -12,9 +12,12 @@
 #### To make poll use an alternate conig file:
  * `python poll.py -c=configLocation.json`
 
-#### To make display sort by volumes at 15 minutes, descending and use config options from alternate location:
+#### To make display sort by volumes at 15 minutes, descending:
  * `python display.py 15 -r -c=configLocation.json`
-
+ 
+#### To make display sort by volumes at 30 minutes, ascending, and use config options from alternate location:
+ * `python display.py 30 -c=configLocation.json`
+ 
 #### Config options:
  * _**intervalsInMinutes:**_ Array of times to show (In minutes)
  * _**midMarketCapThreshold:**_ Minimum market cap to have symbol/market cap displayed in yellow
