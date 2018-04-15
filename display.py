@@ -1,5 +1,7 @@
 from util import *
 import tabulate
+from colorama import init
+init()
 
 print('% change in 24 hour moving volume (time in minutes)')
 
@@ -34,7 +36,11 @@ while True:
 	currentSymbols = list(map(lambda x: x['symbol'], currentPoll))
 	marketCaps = dict()
 
-	for x in currentPoll: marketCaps[x['symbol']] = float(x['market_cap_usd'])
+	for x in currentPoll:
+		marketCaps[x['symbol']] = 0
+		cap = x['market_cap_usd']
+		if cap is not None:
+			marketCaps[x['symbol']] = float(cap)
 
 	marketCapMidThreshold = config.get(midCapConfigKey)
 	marketCapLargeThreshold = config.get(largeCapConfigKey)
@@ -59,7 +65,9 @@ while True:
 			s = p['symbol']
 			if s in currentSymbols:
 				vol = p['24h_volume_usd']
-				if i == 0:
+				if vol is None:
+					volumeBySymbol[s][i] = float(0)
+				elif i == 0:
 					volumeBySymbol[s][i] = float(vol)
 				else:
 					volumeBySymbol[s][i] = (float(vol) / volumeBySymbol[s][0] - 1) * 100
