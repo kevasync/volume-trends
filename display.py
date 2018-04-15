@@ -70,7 +70,11 @@ while True:
 				elif i == 0:
 					volumeBySymbol[s][i] = float(vol)
 				else:
-					volumeBySymbol[s][i] = (float(vol) / volumeBySymbol[s][0] - 1) * 100
+					try:
+						v = (float(vol) / volumeBySymbol[s][0] - 1) * 100
+					except:
+						v = '?'
+					volumeBySymbol[s][i] = v
 	
 
 	volRecordId = getDbIdentifier(dt)
