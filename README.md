@@ -13,7 +13,7 @@
  * `python poll.py -c=configLocation.json`
 
 #### To make display sort by volumes at 15 minutes, descending and use config options from alternate location:
- * `python poll.py 15 -r -c=configLocation.json`
+ * `python display.py 15 -r -c=configLocation.json`
 
 #### Config options:
  * _**intervalsInMinutes:**_ Array of times to show (In minutes)
