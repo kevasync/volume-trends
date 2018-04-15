@@ -2,7 +2,7 @@
 	"intervalsInMinutes": [5, 15, 30, 60, 120, 240, 480, 720, 960, 1440, 2160, 2880],
 	"midMarketCapThreshold": 1918343779.85,
 	"largeMarketCapThreshold": 63944792661.666664,
-	"symbolsToDisplay": [],
+	"symbolsToDisplay": ["BTC", "ETH", "LTC"],
 	"pollInternvalInSeconds": 30,
 	"volChangeFormatThresholds": [-15, -5, 5, 15]
 }
