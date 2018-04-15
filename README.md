@@ -4,7 +4,7 @@
  * [Install and launch docker](https://docs.docker.com/install/)
  * [Install Python 3](https://www.python.org/downloads/)
  * [Install pip 3](https://stackoverflow.com/questions/6587507/how-to-install-pip-with-python-3)
- * Run command once: `pip install datetime simplejson couchdb requests tabulate`
+ * Run command once: `pip install datetime simplejson couchdb requests tabulate colorama`
  * Run command: `docker run -d -p 5984:5984 -v ~/couchdb/data --name couchdb apache/couchdb:1.7.1`
  * To start data polling, run: `python poll.py`
  * To display volume changes, run `python display.py`
