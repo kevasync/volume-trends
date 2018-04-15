@@ -6,14 +6,14 @@
  * [Install pip 3](https://stackoverflow.com/questions/6587507/how-to-install-pip-with-python-3)
  * Run command: `pip3 install datetime simplejson couchdb requests tabulate`
  * Run command: `docker run -d -p 5984:5984 -v ~/couchdb/data --name couchdb apache/couchdb:1.7.1`
- * To start data polling, run: `python3 poll.py`
- * To display volume changes, run `python3 display.py`
+ * To start data polling, run: `python poll.py`
+ * To display volume changes, run `python display.py`
 
 #### To make poll use an alternate conig file:
- * `python3 poll.py -c=configLocation.json`
+ * `python poll.py -c=configLocation.json`
 
 #### To make display sort by volumes at 15 minutes, descending and use config options from alternate location:
- * `python3 poll.py 15 -r -c=configLocation.json`
+ * `python poll.py 15 -r -c=configLocation.json`
 
 #### Config options:
  * _**intervalsInMinutes:**_ Array of times to show (In minutes)
